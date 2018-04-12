@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2018/03/20 10:49:40.000.874,=C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit8.pas</Transaction>
+    <Transaction>2018/04/11 11:35:44.000.683,=C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit8.pas</Transaction>
+    <Transaction>2018/04/11 11:36:46.000.655,C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit8.dfm=C:\Users\cleber.griff\Downloads\Area51\WinScrCap\Main.dfm</Transaction>
+    <Transaction>2018/04/11 11:36:46.000.655,C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit8.pas=C:\Users\cleber.griff\Downloads\Area51\WinScrCap\Main.pas</Transaction>
+    <Transaction>2018/04/11 11:37:40.000.175,C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Project4.dproj=C:\Users\cleber.griff\Downloads\Area51\WinScrCap\WinScrCap.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
