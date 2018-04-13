@@ -3,12 +3,11 @@ unit Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+  Winapi.Windows, Winapi.Messages, Vcl.Graphics,
+  Vcl.Forms, System.Classes, Vcl.ExtCtrls;
 
 type
   TfrmMain = class(TForm)
-    Label1: TLabel;
     TrayIcon1: TTrayIcon;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -19,7 +18,8 @@ type
     procedure HandleHotkey(var msg : TMessage);
 
     procedure CaptureScreen(ABitmap: TBitmap);
-    procedure CaptureScreenToFile(const AFilename: string);
+    procedure CaptureClipboard;
+    procedure pLimparMemoria;
   public
     { Public declarations }
   end;
@@ -33,35 +33,21 @@ const
 implementation
 
 uses
-  Jpeg, ShellAPI, Clipbrd;
+  ShellAPI, Clipbrd;
 
 {$R *.dfm}
 
-procedure TfrmMain.CaptureScreenToFile(const AFilename: string);
+procedure TfrmMain.CaptureClipboard;
 var
   vBmp: TBitmap;
-//  vJpg: TJpegImage;
 begin
-  // create temporary bitmap
   vBmp := TBitmap.Create;
+
   try
     CaptureScreen(vBmp);
     Clipboard.Assign(vBmp);
-     (*
-    // create Jpg image object
-    vJpg := TJpegImage.Create;
-    try
-      vJpg.Assign(vBmp);
-      // compress the image to have quality 70% of original
-      vJpg.CompressionQuality := 100;
-      // save the captured screen into a file in jpg format
-      vJpg.SaveToFile(AFileName);
-    finally
-      vJpg.Free;  //destroy the jpg image object
-    end;
-    *)
   finally
-    vBmp.Free; // destroy temporary bitmap
+    vBmp.Free;
   end;
 end;
 
@@ -82,6 +68,8 @@ begin
 
   FHotkeyWnd := AllocateHWND(HandleHotkey);
   RegisterHotKey(FHotkeyWnd, HOTKEY1_ID, MOD_CONTROL, VK_SNAPSHOT);
+
+  pLimparMemoria;
 end;
 
 procedure TfrmMain.HandleHotkey(var msg: TMessage);
@@ -90,9 +78,7 @@ var
 begin
   if msg.Msg = WM_HOTKEY then
   begin
-    Cursor := crHourGlass;
-
-    CaptureScreenToFile('TMP1.jpg');
+    CaptureClipboard;
 
     ShellExecute(Handle,
                 'open',
@@ -115,11 +101,25 @@ begin
         Keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
       end;
     until hWindow <> 0;
-
-    Cursor := crDefault;
   end
   else
     Msg.Result := DefWindowProc(FHotkeyWnd, msg.Msg, msg.wParam, msg.lParam);
+
+  pLimparMemoria;
+end;
+
+procedure TfrmMain.pLimparMemoria;
+var
+  MainHandle : THandle;
+begin
+  try
+    MainHandle := OpenProcess(PROCESS_ALL_ACCESS, false, GetCurrentProcessID);
+    SetProcessWorkingSetSize(MainHandle, $FFFFFFFF, $FFFFFFFF);
+    CloseHandle(MainHandle);
+  finally
+  end;
+
+  Application.ProcessMessages;
 end;
 
 procedure TfrmMain.TrayIcon1Click(Sender: TObject);

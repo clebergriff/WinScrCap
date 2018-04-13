@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'frmMain'
-  ClientHeight = 123
-  ClientWidth = 359
+  ClientHeight = 75
+  ClientWidth = 199
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,20 +16,6 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 33
-  object Label1: TLabel
-    Left = 88
-    Top = 40
-    Width = 167
-    Height = 32
-    Caption = 'WinScrCap'#8482
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -27
-    Font.Name = 'Arial'
-    Font.Style = []
-    Font.Quality = fqClearType
-    ParentFont = False
-  end
   object TrayIcon1: TTrayIcon
     Icon.Data = {
       0000010001001010000001002000680400001600000028000000100000002000
@@ -69,7 +55,7 @@ object frmMain: TfrmMain
       0000C0070000C001000080010000000000000000000000000000000000000000
       00000000000000000000000000008001000080000000E0000000F00C0000}
     OnClick = TrayIcon1Click
-    Left = 296
-    Top = 72
+    Left = 152
+    Top = 16
   end
 end
