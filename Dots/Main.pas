@@ -39,19 +39,24 @@ var
   c1, c2: LongInt;
   r, g, b, v1, v2: byte;
 begin
-  A:= Round(2.55 * A);
-  c1 := ColorToRGB(Color1);
-  c2 := ColorToRGB(Color2);
-  v1:= Byte(c1);
-  v2:= Byte(c2);
-  r:= A * (v1 - v2) shr 8 + v2;
-  v1:= Byte(c1 shr 8);
-  v2:= Byte(c2 shr 8);
-  g:= A * (v1 - v2) shr 8 + v2;
-  v1:= Byte(c1 shr 16);
-  v2:= Byte(c2 shr 16);
-  b:= A * (v1 - v2) shr 8 + v2;
-  Result := (b shl 16) + (g shl 8) + r;
+  try
+    A:= Round(2.55 * A);
+    c1 := ColorToRGB(Color1);
+    c2 := ColorToRGB(Color2);
+    v1:= Byte(c1);
+    v2:= Byte(c2);
+    r:= A * (v1 - v2) shr 8 + v2;
+    v1:= Byte(c1 shr 8);
+    v2:= Byte(c2 shr 8);
+    g:= A * (v1 - v2) shr 8 + v2;
+    v1:= Byte(c1 shr 16);
+    v2:= Byte(c2 shr 16);
+    b:= A * (v1 - v2) shr 8 + v2;
+    Result := (b shl 16) + (g shl 8) + r;
+  except
+    on E: Exception do
+      ShowMessage('Blend - ' +E.Message);
+  end;
 end;
 
 procedure TForm2.FormMouseDown(Sender: TObject; Button: TMouseButton;
@@ -71,16 +76,16 @@ end;
 
 procedure TForm2.pCriarShape(nHeight, nWidth, nX, nY: Integer; newColor: TColor);
 begin
-  try
-    TThread.CreateAnonymousThread(
-    procedure
-    var
-      newX, newY: Integer;
-      shp: TShape;
-    begin
+  TThread.CreateAnonymousThread(
+  procedure
+  var
+    newX, newY: Integer;
+    shp: TShape;
+  begin
+    try
       shp := TShape.Create(Self);
 
-      shp.Parent := Form2;
+      shp.Parent := Self;
 
       shp.Brush.Color := newColor;
 
@@ -118,11 +123,14 @@ begin
 
         pTestarChoque(shp);
       end;
-    end).Start;
-  except
-    on E: Exception do
-      ShowMessage('pGerarDot - ' +E.Message);
-  end;
+
+    except
+      ;
+      {
+      on E: Exception do
+        ShowMessage('pGerarDot - ' +E.Message); }
+    end;
+  end).Start;
 end;
 
 procedure TForm2.pTestarChoque(shp: TShape);
@@ -153,11 +161,15 @@ begin
           corFilho :=
             Blend(shp.Brush.Color, (Form2.Components[i] as TShape).Brush.Color, 50);
 
-          if Assigned(Form2.Components[i]) then
-            Form2.Components[i].Free;
+          try
+            if Assigned(Form2.Components[i]) then
+              Form2.Components[i].Free;
 
-          if Assigned(shp) then
-            FreeAndNil(shp);
+            if Assigned(shp) then
+              shp.Free;
+          except
+            ;
+          end;
 
           pCriarShape(20, 20, R.Left, R.Top, corFilho);
 
@@ -173,7 +185,7 @@ end;
 
 procedure TForm2.Timer1Timer(Sender: TObject);
 begin
-  Self.Refresh;
+  Application.ProcessMessages;
 end;
 
 end.

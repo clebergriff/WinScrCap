@@ -16,6 +16,7 @@ object Form2: TForm2
   PixelsPerInch = 96
   TextHeight = 13
   object Timer1: TTimer
+    Interval = 60
     OnTimer = Timer1Timer
     Left = 264
     Top = 8
