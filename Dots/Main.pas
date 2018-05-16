@@ -4,14 +4,14 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, madExceptVcl;
 
 type
   TForm2 = class(TForm)
     Timer1: TTimer;
+    MadExceptionHandler1: TMadExceptionHandler;
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
     procedure pTestarChoque(shp: TShape);
@@ -82,53 +82,45 @@ begin
     newX, newY: Integer;
     shp: TShape;
   begin
-    try
-      shp := TShape.Create(Self);
+    shp := TShape.Create(Self);
 
-      shp.Parent := Self;
+    shp.Brush.Color := newColor;
 
-      shp.Brush.Color := newColor;
+    shp.Height := nHeight;
+    shp.Width := nWidth;
 
-      shp.Height := nHeight;
-      shp.Width := nWidth;
+    shp.Parent := Self;
 
-      shp.Left := nX;
-      shp.Top := nY;
+    shp.Left := nX;
+    shp.Top := nY;
 
-      shp.Visible := True;
+    shp.Visible := True;
 
-      while Assigned(shp) do
+    while shp <> nil do
+    begin
+      if (shp.Left + shp.Height < 0) or (shp.Left + shp.Height > 300) or
+         (shp.Top + shp.Width < 0) or (shp.Left + shp.Width > 300) then
       begin
-        if (shp.Left + shp.Height < 0) or (shp.Left + shp.Height > 300) or
-           (shp.Top + shp.Width < 0) or (shp.Left + shp.Width > 300) then
-        begin
-          shp.Left := 0;
-          shp.Top := 0;
-        end;
-
-        repeat
-          newX := RandomRange(-4, 5);
-        until (shp.Left + newX > 0) and (shp.Left + shp.Width + newX <= 300);
-
-        repeat
-          newY := RandomRange(-4, 5);
-        until (shp.Top + newY > 0) and (shp.Top + shp.Height + newY < 300);
-
-        shp.Left := shp.Left + newX;
-        shp.Top := shp.Top + newY;
-
-        Sleep(RandomRange(0, 100));
-
-        shp.Refresh;
-
-        pTestarChoque(shp);
+        shp.Left := 0;
+        shp.Top := 0;
       end;
 
-    except
-      ;
-      {
-      on E: Exception do
-        ShowMessage('pGerarDot - ' +E.Message); }
+      repeat
+        newX := RandomRange(-4, 5);
+      until (shp.Left + newX > 0) and (shp.Left + shp.Width + newX <= 300);
+
+      repeat
+        newY := RandomRange(-4, 5);
+      until (shp.Top + newY > 0) and (shp.Top + shp.Height + newY < 300);
+
+      shp.Left := shp.Left + newX;
+      shp.Top := shp.Top + newY;
+
+      Sleep(RandomRange(0, 100));
+
+      shp.Refresh;
+
+      pTestarChoque(shp);
     end;
   end).Start;
 end;
@@ -139,7 +131,6 @@ var
   R : TRect;
   corFilho: TColor;
 begin
-  try
     for i := 0 to Pred(Form2.ComponentCount) do
     begin
       if (Form2.Components[i] is TShape) and
@@ -163,10 +154,10 @@ begin
 
           try
             if Assigned(Form2.Components[i]) then
-              Form2.Components[i].Free;
+              Form2.Components[i].Destroy;
 
             if Assigned(shp) then
-              shp.Free;
+              shp.Destroy;
           except
             ;
           end;
@@ -177,15 +168,6 @@ begin
         end;
       end;
     end;
-  except
-    on E: Exception do
-      ShowMessage('Colisao - ' +E.Message);
-  end;
-end;
-
-procedure TForm2.Timer1Timer(Sender: TObject);
-begin
-  Application.ProcessMessages;
 end;
 
 end.

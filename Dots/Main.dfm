@@ -17,8 +17,11 @@ object Form2: TForm2
   TextHeight = 13
   object Timer1: TTimer
     Interval = 60
-    OnTimer = Timer1Timer
     Left = 264
     Top = 8
+  end
+  object MadExceptionHandler1: TMadExceptionHandler
+    Left = 268
+    Top = 68
   end
 end
