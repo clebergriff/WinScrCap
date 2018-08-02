@@ -71,7 +71,12 @@ procedure TForm2.FormMouseDown(Sender: TObject; Button: TMouseButton;
        ) ;
   end;
 begin
-  pCriarShape(20, 20, X, Y, HexToTColor(initialColors[RandomRange(0, 4)]));
+  try
+    pCriarShape(20, 20, X, Y, HexToTColor(initialColors[RandomRange(0, 4)]));
+  except
+   on E: Exception do
+    showmessage(e.Message);
+   end;
 end;
 
 procedure TForm2.pCriarShape(nHeight, nWidth, nX, nY: Integer; newColor: TColor);
@@ -162,7 +167,12 @@ begin
             ;
           end;
 
-          pCriarShape(20, 20, R.Left, R.Top, corFilho);
+          try
+            pCriarShape(20, 20, R.Left, R.Top, corFilho);
+          except
+           on E: Exception do
+            showmessage(e.Message);
+           end;
 
           Exit;
         end;

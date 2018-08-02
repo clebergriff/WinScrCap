@@ -72,20 +72,38 @@ var
 
 implementation
 
+uses
+  StrUtils;
+
 {$R *.dfm}
 
 procedure TForm5.Button1Click(Sender: TObject);
+  function fGetFromFile: TArray<Integer>;
+  var
+    Strings: TStringList;
+    strNumeros: TArray<String>;
+    i: Integer;
+  begin
+    Strings := TStringList.Create;
+    try
+      Strings.LoadFromFile('data.txt');
+
+      strNumeros := Strings.Text.Split([',']);
+
+      for i := 0 to Length(strNumeros) - 1 do
+      begin
+        SetLength(Result, Length(Result)+1);
+        Result[Length(Result)-1] := StrToInt(strNumeros[i].Trim);
+      end;
+    finally
+      Strings.Free;
+    end;
+  end;
 var
-  arrInt: Array of Integer;
+  arrInt: TArray<Integer>;
   i: Integer;
 begin
-  arrInt :=
-    [1,2,3,5,6,7,11,12,14,16,17,19,21,22,24,
-     2,4,7,9,10,12,13,14,15,16,17,22,23,24,25,
-     1,2,3,5,9,10,11,13,15,16,17,18,23,24,
-     1,4,5,6,7,9,12,13,15,17,18,19,20,21,25,
-     1,2,3,7,8,10,11,12,15,16,17,20,22,23,25,
-     1,2,3,7,8,10,11,12,13,14,18,20,21,23,25];
+  arrInt := fGetFromFile;
 
   for i := 0 to Length(arrInt) - 1 do
   begin

@@ -1,6 +1,11 @@
 program Dots;
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Vcl.Forms,
   Main in 'Main.pas' {Form2};
 

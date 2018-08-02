@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2018/05/08 08:29:28.000.947,=C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
     <Transaction>2018/05/08 08:38:22.000.627,C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\cleber.griff\Downloads\Area51\Dots\Dots.dproj</Transaction>
-    <Transaction>2018/05/08 08:38:39.000.319,C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit2.pas=C:\Users\cleber.griff\Downloads\Area51\Dots\Main.pas</Transaction>
     <Transaction>2018/05/08 08:38:39.000.319,C:\Users\cleber.griff\Documents\Embarcadero\Studio\Projects\Unit2.dfm=C:\Users\cleber.griff\Downloads\Area51\Dots\Main.dfm</Transaction>
   </Transactions>
 </BorlandProject>
